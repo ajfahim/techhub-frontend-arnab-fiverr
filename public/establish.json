@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "bg-img": "https://i.ibb.co/ZxWKGfx/98.jpg",
+    "icon": "https://i.ibb.co/4FqsxjV/pngtree-school-building-icon-png-image-1753757.jpg",
+    "continent": "Europe",
+    "location": "Paris, France",
+    "establishment_type": "Historical Landmark",
+    "description": "The Eiffel Tower is an iconic wrought-iron lattice tower in Paris, France, and one of the York"
+  },
+  {
+    "id": 2,
+    "bg-img": "https://i.ibb.co/ZxWKGfx/98.jpg",
+    "icon": "https://i.ibb.co/4FqsxjV/pngtree-school-building-icon-png-image-1753757.jpg",
+    "continent": "North America",
+    "location": "New York City, USA",
+    "establishment_type": "Monument",
+    "description": "The Statue of Liberty is a colossal neoclassical sculpture on Liberty Island in New York "
+  },
+  {
+    "id": 3,
+    "bg-img": "https://i.ibb.co/ZxWKGfx/98.jpg",
+    "icon": "https://i.ibb.co/4FqsxjV/pngtree-school-building-icon-png-image-1753757.jpg",
+    "continent": "Asia",
+    "location": "Tokyo, Japan",
+    "establishment_type": "Telecommunications ",
+    "description": "Tokyo Tower is a communications and observation tower in the Shiba-koen district of Minato, "
+  },
+  {
+    "id": 4,
+    "bg-img": "https://i.ibb.co/ZxWKGfx/98.jpg",
+    "icon": "https://i.ibb.co/4FqsxjV/pngtree-school-building-icon-png-image-1753757.jpg",
+    "continent": "Australia",
+    "location": "Sydney, Australia",
+    "establishment_type": "Performing Arts",
+    "description": "The Sydney Opera House is a multi-venue performing arts center located on the Bennelong "
+  },
+  {
+    "id": 5,
+    "bg-img": "https://i.ibb.co/ZxWKGfx/98.jpg",
+    "icon": "https://i.ibb.co/4FqsxjV/pngtree-school-building-icon-png-image-1753757.jpg",
+    "continent": "Africa",
+    "location": "Giza, Egypt",
+    "establishment_type": "Ancient Wonder",
+    "description": "The Great Pyramid of Giza is the largest of the three pyramids on the Giza Plateau and is "
+  },
+  {
+    "id": 6,
+    "bg-img": "https://i.ibb.co/ZxWKGfx/98.jpg",
+    "icon": "https://i.ibb.co/4FqsxjV/pngtree-school-building-icon-png-image-1753757.jpg",
+    "continent": "Europe",
+    "location": "Rome, Italy",
+    "establishment_type": "Ancient Amphitheater",
+    "description": "The Colosseum is an ancient Roman amphitheater located in the center of Rome, Italy. It is."
+  },
+  {
+    "id": 7,
+    "bg-img": "https://i.ibb.co/ZxWKGfx/98.jpg",
+    "icon": "https://i.ibb.co/4FqsxjV/pngtree-school-building-icon-png-image-1753757.jpg",
+    "continent": "South America",
+    "location": "Rio de Janeiro, Brazil",
+    "establishment_type": "Statue",
+    "description": "Christ the Redeemer is a colossal statue of Jesus Christ in Rio de Janeiro, Brazil "
+  },
+  {
+    "id": 8,
+    "bg-img": "https://i.ibb.co/ZxWKGfx/98.jpg",
+    "icon": "https://i.ibb.co/4FqsxjV/pngtree-school-building-icon-png-image-1753757.jpg",
+    "continent": "Asia",
+    "location": "Dubai, UAE",
+    "establishment_type": "Skyscraper",
+    "description": "Burj Khalifa is the tallest building in the world, located in Dubai, United Arab Emirates. "
+  }
+]

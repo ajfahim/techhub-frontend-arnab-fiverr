@@ -1,0 +1,6 @@
+/* custom-drawer-styles.css */
+
+/* Target the overlay element and set its display to none */
+.drawer-overlay {
+  display: none;
+}
