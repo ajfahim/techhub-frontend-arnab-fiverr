@@ -1,5 +1,3 @@
-# This is the newer version
-
 FROM node:18-alpine
 
 WORKDIR /app
@@ -14,6 +12,6 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 5173
+EXPOSE 3000
 
 CMD [ "serve", "-s", "dist" ]
