@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { FaRegStar } from "react-icons/fa";
-import { FaRegMessage } from "react-icons/fa6";
-import { useAuthContext } from "../../hooks/useAuthContext";
 import io from "socket.io-client";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
-const socket = io("http://localhost:4000");
+const socket = io(`${import.meta.env.VITE_APP_BACKEND_URL}`);
 
 const MessageApp = () => {
   const { user } = useAuthContext();
@@ -16,17 +14,24 @@ const MessageApp = () => {
 
   // Fetch all users with the last message
   const fetchUsers = async () => {
-    const response = await fetch("http://localhost:4000/api/user/getUser");
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/getUser`
+    );
     const users = await response.json();
 
     // Fetch the last message for each user
     const usersWithLastMessage = await Promise.all(
       users.map(async (contactUser) => {
         const lastMessageResponse = await fetch(
-          `http://localhost:4000/api/messages/last/${user.user._id}/${contactUser._id}`
+          `${import.meta.env.VITE_APP_BACKEND_URL}/api/messages/last/${
+            user.user._id
+          }/${contactUser._id}`
         );
         const lastMessage = await lastMessageResponse.json();
-        return { ...contactUser, lastMessage: lastMessage?.text || "No messages yet" };
+        return {
+          ...contactUser,
+          lastMessage: lastMessage?.text || "No messages yet",
+        };
       })
     );
 
@@ -35,7 +40,9 @@ const MessageApp = () => {
 
   const loadMessages = async (contactId) => {
     const response = await fetch(
-      `http://localhost:4000/api/messages/${user.user._id}/${contactId}`
+      `${import.meta.env.VITE_APP_BACKEND_URL}/api/messages/${
+        user.user._id
+      }/${contactId}`
     );
     const data = await response.json();
     setMessages(data);
@@ -49,8 +56,10 @@ const MessageApp = () => {
     socket.on("receive_message", (data) => {
       // Check if the message is from/to the currently selected user
       if (
-        (data.senderId === user.user._id && data.receiverId === selectedUser?._id) ||
-        (data.senderId === selectedUser?._id && data.receiverId === user.user._id)
+        (data.senderId === user.user._id &&
+          data.receiverId === selectedUser?._id) ||
+        (data.senderId === selectedUser?._id &&
+          data.receiverId === user.user._id)
       ) {
         setMessages((prevMessages) => [...prevMessages, data]);
       }
@@ -58,7 +67,8 @@ const MessageApp = () => {
       // Update last message in sidebar
       setAllUsers((prevUsers) =>
         prevUsers.map((contactUser) =>
-          contactUser._id === data.senderId || contactUser._id === data.receiverId
+          contactUser._id === data.senderId ||
+          contactUser._id === data.receiverId
             ? { ...contactUser, lastMessage: data.text }
             : contactUser
         )
@@ -113,8 +123,12 @@ const MessageApp = () => {
           {allUsers
             .filter(
               (user) =>
-                user?.firstname?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-                user?.lastname?.toLowerCase().includes(searchTerm?.toLowerCase())
+                user?.firstname
+                  ?.toLowerCase()
+                  .includes(searchTerm?.toLowerCase()) ||
+                user?.lastname
+                  ?.toLowerCase()
+                  .includes(searchTerm?.toLowerCase())
             )
             .map((user) => (
               <div
@@ -168,12 +182,16 @@ const MessageApp = () => {
                 <div
                   key={index}
                   className={`mb-4 ${
-                    message.senderId === user.user._id ? "text-right" : "text-left"
+                    message.senderId === user.user._id
+                      ? "text-right"
+                      : "text-left"
                   }`}
                 >
                   <div
                     className={`inline-block p-2 rounded-md ${
-                      message.senderId === user.user._id ? "bg-gray-200" : "bg-teal-100"
+                      message.senderId === user.user._id
+                        ? "bg-gray-200"
+                        : "bg-teal-100"
                     }`}
                   >
                     <p>{message.text}</p>

@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  IoIosArrowDown,
-  IoIosHome,
-  IoIosStar,
-  IoMdHeartEmpty,
-} from "react-icons/io";
+import { IoIosHome, IoIosSearch, IoIosStar } from "react-icons/io";
 import { IoLocationSharp } from "react-icons/io5";
-import { IoIosSearch } from "react-icons/io";
-import SchoolNavbar from "../../../../Shared/SchoolNavbar/SchoolNavbar";
 import ButtonGroup from "../../../../Components/ButtonGroup/ButtonGroup";
 import { useAuthContext } from "../../../../hooks/useAuthContext";
+import SchoolNavbar from "../../../../Shared/SchoolNavbar/SchoolNavbar";
 
 const teachers = [
   {
@@ -54,7 +48,9 @@ function ApplicationReceived() {
   // Fetch applications for the school
   const fetchApplication = async () => {
     const response = await fetch(
-      `http://localhost:4000/api/application/getapplicationBySchool/${user?.user?._id}`
+      `${
+        import.meta.env.VITE_BACKEND_URL
+      }/api/application/getapplicationBySchool/${user?.user?._id}`
     );
     const data = await response.json();
     setApplications(data);
@@ -77,7 +73,8 @@ function ApplicationReceived() {
 
         if (key === "Name") {
           // Combine firstName and lastName for name search
-          const fullName = `${application.firstName} ${application.lastName}`.toLowerCase();
+          const fullName =
+            `${application.firstName} ${application.lastName}`.toLowerCase();
           return fullName.includes(value);
         }
 

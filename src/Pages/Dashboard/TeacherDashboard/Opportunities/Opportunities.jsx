@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import ButtonGroup from "../../../../Components/ButtonGroup/ButtonGroup";
 import { IoLocationOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import ButtonGroup from "../../../../Components/ButtonGroup/ButtonGroup";
 
 const buttonLabels = [
   "Subject", // corresponds to 'keywords'
   "Location", // corresponds to 'address'
   "Job Type", // corresponds to 'faceToFace' or 'remotely'
-  
 ];
 
 function Opportunities() {
@@ -17,18 +16,22 @@ function Opportunities() {
   const navigate = useNavigate();
 
   const fetchJobs = async () => {
-    const response = await fetch('http://localhost:4000/api/offer/getOffers');
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_BACKEND_URL}/api/offer/getOffers`
+    );
     const data = await response.json();
     setJobinfos(data);
     setFilteredJobs(data);
-    console.log('jobs', data);
+    console.log("jobs", data);
   };
 
   const fetchSchools = async () => {
-    const response = await fetch('http://localhost:4000/api/user/getSchools');
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/getSchools`
+    );
     const data = await response.json();
     setSchools(data);
-    console.log('Schools', data);
+    console.log("Schools", data);
   };
 
   useEffect(() => {
@@ -37,11 +40,15 @@ function Opportunities() {
   }, []);
 
   const handleApply = (jobId, school) => {
-    navigate(`/teacherDashboard/applyJob/${jobId}`, { state: { jobId, school } });
+    navigate(`/teacherDashboard/applyJob/${jobId}`, {
+      state: { jobId, school },
+    });
   };
 
   const handlejobview = (jobId, school) => {
-    navigate(`/teacherDashboard/singlejobview/${jobId}`, { state: { jobId, school } });
+    navigate(`/teacherDashboard/singlejobview/${jobId}`, {
+      state: { jobId, school },
+    });
   };
 
   const getSchool = (ID) => {
@@ -56,35 +63,41 @@ function Opportunities() {
       return buttonLabels.every((label) => {
         const value = searchCriteria[label];
         if (!value) return true;
-  
+
         if (label === "Subject") {
-          return job.keywords?.some(keyword =>
+          return job.keywords?.some((keyword) =>
             keyword.toLowerCase().includes(value.toLowerCase())
           );
         }
-  
+
         if (label === "Location") {
-          return getSchool(job.school)?.address
-            .toLowerCase()
+          return getSchool(job.school)
+            ?.address.toLowerCase()
             .includes(value.toLowerCase());
         }
-  
+
         if (label === "Job Type") {
-          return (value.toLowerCase() === 'offline' && job.faceToFace) ||
-                 (value.toLowerCase() === 'remote' && job.remotely);
+          return (
+            (value.toLowerCase() === "offline" && job.faceToFace) ||
+            (value.toLowerCase() === "remote" && job.remotely)
+          );
         }
-  
+
         return false;
       });
     });
-  
+
     // Implementing Salary Sorting
     const salarySort = searchCriteria["Salary"];
     if (salarySort) {
       filtered = filtered.sort((a, b) => {
-        const salaryA = parseInt(a.salary.split('-')[0].replace(/,/g, '').trim());
-        const salaryB = parseInt(b.salary.split('-')[0].replace(/,/g, '').trim());
-  
+        const salaryA = parseInt(
+          a.salary.split("-")[0].replace(/,/g, "").trim()
+        );
+        const salaryB = parseInt(
+          b.salary.split("-")[0].replace(/,/g, "").trim()
+        );
+
         if (salarySort === "low-to-high") {
           return salaryA - salaryB;
         } else if (salarySort === "high-to-low") {
@@ -93,10 +106,10 @@ function Opportunities() {
         return 0;
       });
     }
-  
+
     setFilteredJobs(filtered);
   };
-  
+
   return (
     <div>
       <div className="max-w-[1440px] mx-auto px-4 md:px-20 lg:px-28">

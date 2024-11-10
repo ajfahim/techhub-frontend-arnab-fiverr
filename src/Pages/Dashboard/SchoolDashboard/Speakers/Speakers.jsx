@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { IoIosHome, IoIosStar, IoMdHeartEmpty } from "react-icons/io";
 import { IoLocationSharp } from "react-icons/io5";
-import SchoolNavbar from "../../../../Shared/SchoolNavbar/SchoolNavbar";
 import ButtonGroup from "../../../../Components/ButtonGroup/ButtonGroup";
 import { useAuthContext } from "../../../../hooks/useAuthContext";
+import SchoolNavbar from "../../../../Shared/SchoolNavbar/SchoolNavbar";
 
 const buttonLabels = ["Skills", "Experience", "Location", "Rating"];
 
@@ -15,7 +15,9 @@ function Speakers() {
 
   const fetchSpeakers = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/api/user/getAllSpeakers`);
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/getAllSpeakers`
+      );
       const data = await response.json();
       console.log("Speakers data:", data);
       setSpeakers(data);
@@ -45,11 +47,15 @@ function Speakers() {
         }
 
         if (key === "Experience") {
-          return speaker.experience?.toLowerCase().includes(inputs[key].toLowerCase());
+          return speaker.experience
+            ?.toLowerCase()
+            .includes(inputs[key].toLowerCase());
         }
 
         if (key === "Location") {
-          return speaker.selectCity?.toLowerCase().includes(inputs[key].toLowerCase());
+          return speaker.selectCity
+            ?.toLowerCase()
+            .includes(inputs[key].toLowerCase());
         }
 
         if (key === "Rating") {
@@ -67,7 +73,9 @@ function Speakers() {
     setActiveTab(tab);
     if (tab === "favourites") {
       // Assuming speakers have a `isFavourite` field that marks them as favourites
-      const favouriteSpeakers = speakers.filter((speaker) => speaker.isFavourite);
+      const favouriteSpeakers = speakers.filter(
+        (speaker) => speaker.isFavourite
+      );
       setFilteredSpeakers(favouriteSpeakers);
     } else {
       setFilteredSpeakers(speakers); // Show all speakers
@@ -130,7 +138,9 @@ function Speakers() {
                       className="w-10 h-10 rounded-full mr-2"
                     />
                     <div>
-                      <h2 className="text-lg font-semibold">{speaker?.firstname} {speaker?.lastname}</h2>
+                      <h2 className="text-lg font-semibold">
+                        {speaker?.firstname} {speaker?.lastname}
+                      </h2>
                       <div className="flex items-center">
                         <IoLocationSharp className="mr-1 text-red-600" />
                         <span>{speaker.selectCity}</span>

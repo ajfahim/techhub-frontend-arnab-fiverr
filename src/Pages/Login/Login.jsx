@@ -1,18 +1,17 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import signUpImg from "../../assets/login/image1.png";
-import logo from "../../assets/login/image.png";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
 import {
   FacebookAuthProvider,
   GoogleAuthProvider,
   getAuth,
   signInWithPopup,
 } from "firebase/auth";
+import React, { useState } from "react";
+import { FaFacebook } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
+import { Link } from "react-router-dom";
+import logo from "../../assets/login/image.png";
+import signUpImg from "../../assets/login/image1.png";
 import { app } from "../../auth/firebase";
 import { useLogin } from "../../hooks/useLogin";
-import { useAuthContext } from "../../hooks/useAuthContext";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -109,7 +108,7 @@ function Login() {
     try {
       setLoading(true);
       const response = await fetch(
-        "http://localhost:4000/api/user/forgotPassword/OTP",
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/forgotPassword/OTP`,
         {
           method: "POST",
           headers: {
@@ -154,7 +153,9 @@ function Login() {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:4000/api/user/changePassword/${email}`,
+        `${
+          import.meta.env.VITE_APP_BACKEND_URL
+        }/api/user/changePassword/${email}`,
         {
           method: "PATCH",
           headers: {
@@ -164,7 +165,9 @@ function Login() {
         }
       );
       if (response.ok) {
-        alert("Password changed successfully. You can now log in with your new password.");
+        alert(
+          "Password changed successfully. You can now log in with your new password."
+        );
         // Reset all states
         setForgotPassword(false);
         setOtpSent(false);
@@ -175,7 +178,9 @@ function Login() {
         setConfirmNewPassword("");
       } else {
         const errorData = await response.json();
-        alert(errorData.message || "Failed to change password. Please try again.");
+        alert(
+          errorData.message || "Failed to change password. Please try again."
+        );
       }
     } catch (error) {
       console.error("Change Password Error:", error);
@@ -211,7 +216,9 @@ function Login() {
             </h1>
 
             <h6 className="text-center mb-4">
-              {forgotPassword ? "Reset Your Password" : "Login into your account"}
+              {forgotPassword
+                ? "Reset Your Password"
+                : "Login into your account"}
             </h6>
 
             {forgotPassword ? (

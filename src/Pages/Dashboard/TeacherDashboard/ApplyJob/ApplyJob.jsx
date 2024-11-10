@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import TeacherDashboardNavbar from "../../../../Shared/TeacherDashboardNavbar/TeacherDashboardNavbar";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useAuthContext } from "../../../../hooks/useAuthContext";
 
 function ApplyJob() {
-
-  const {user} = useAuthContext();
+  const { user } = useAuthContext();
 
   const { id } = useParams();
 
@@ -18,7 +16,7 @@ function ApplyJob() {
   const jobId = location.state?.jobId;
 
   const [formData, setFormData] = useState({
-    schoolId:school?._id,
+    schoolId: school?._id,
     offerId: jobId,
     firstName: "",
     lastName: "",
@@ -34,11 +32,11 @@ function ApplyJob() {
     isSubscribed: false,
   });
 
-  useEffect(()=>{
-    if(user?.user?._id){
+  useEffect(() => {
+    if (user?.user?._id) {
       setFormData({
-        teacherId:user?.user?._id,
-        schoolId:school?._id,
+        teacherId: user?.user?._id,
+        schoolId: school?._id,
         offerId: jobId,
         firstName: "",
         lastName: "",
@@ -54,7 +52,7 @@ function ApplyJob() {
         isSubscribed: false,
       });
     }
-  },[user])
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -70,11 +68,7 @@ function ApplyJob() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-
-
-
-
-    fetch("http://localhost:4000/api/application/apply", {
+    fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/api/application/apply`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -92,17 +86,13 @@ function ApplyJob() {
             showConfirmButton: false,
             timer: 1500,
           });
-          navigate('/teacherDashboard/application');
+          navigate("/teacherDashboard/application");
         }
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
       });
   };
-
-
-
-
 
   return (
     <>

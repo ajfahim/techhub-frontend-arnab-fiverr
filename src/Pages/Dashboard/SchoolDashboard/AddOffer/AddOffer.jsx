@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useAuthContext } from "../../../../hooks/useAuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../../../hooks/useAuthContext";
 
 function AddOffer() {
   // State variables for each form field
@@ -9,11 +9,9 @@ function AddOffer() {
 
   const offerId = location.state?.offerId;
 
-  console.log("const location = useLocation();", offerId)
+  console.log("const location = useLocation();", offerId);
 
-
-  const navigate=useNavigate();
-
+  const navigate = useNavigate();
 
   const { user } = useAuthContext();
   const [title, setTitle] = useState("");
@@ -63,7 +61,9 @@ function AddOffer() {
 
   const fetchOfferDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/api/offer/jobs/${offerId}`);
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/offer/jobs/${offerId}`
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch offer details");
       }
@@ -124,7 +124,7 @@ function AddOffer() {
     if (offerId) {
       fetchOfferDetails();
     }
-  }, [offerId])
+  }, [offerId]);
 
   const handleAdd = () => {
     if (tags.trim() !== "") {
@@ -142,58 +142,58 @@ function AddOffer() {
   const handleChange = (event) => {
     const { name, checked } = event.target;
     switch (name) {
-      case 'evaluation':
+      case "evaluation":
         setEvaluation(checked);
         break;
-      case 'speakerPresence':
+      case "speakerPresence":
         setSpeakerPresence(checked);
         break;
-      case 'faceToFace':
+      case "faceToFace":
         setFaceToFace(checked);
         break;
-      case 'remotely':
+      case "remotely":
         setRemotely(checked);
         break;
-      case 'applicationLimit':
+      case "applicationLimit":
         setApplicationLimit(checked);
         break;
-      case 'urgentOffer':
+      case "urgentOffer":
         setUrgentOffer(checked);
         break;
-      case 'flexibleStartDate':
+      case "flexibleStartDate":
         setFlexibleStartDate(checked);
         break;
-      case 'flexibleEndDate':
+      case "flexibleEndDate":
         setFlexibleEndDate(checked);
         break;
-      case 'defineSlots':
+      case "defineSlots":
         setDefineSlots(checked);
         break;
-      case 'hourlyPay':
+      case "hourlyPay":
         setHourlyPay(checked);
         break;
-      case 'dailyRate':
+      case "dailyRate":
         setDailyRate(checked);
         break;
-      case 'expenses':
+      case "expenses":
         setExpenses(checked);
         break;
-      case 'identification':
+      case "identification":
         setIdentification(checked);
         break;
-      case 'diplomasCertificates':
+      case "diplomasCertificates":
         setDiplomasCertificates(checked);
         break;
-      case 'criminalRecord':
+      case "criminalRecord":
         setCriminalRecord(checked);
         break;
-      case 'cv':
+      case "cv":
         setCv(checked);
         break;
-      case 'bankAccount':
+      case "bankAccount":
         setBankAccount(checked);
         break;
-      case 'kbis':
+      case "kbis":
         setKbis(checked);
         break;
       default:
@@ -261,61 +261,74 @@ function AddOffer() {
 
     if (offerId) {
       // Sending the data as JSON to the backend
-      fetch(`http://localhost:4000/api/offer/updateOffer/${offerId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(offerData),
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log('Offer created:', data);
+      fetch(
+        `${
+          import.meta.env.VITE_APP_BACKEND_URL
+        }/api/offer/updateOffer/${offerId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(offerData),
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Offer created:", data);
         })
-        .catch(error => {
-          console.error('Error creating offer:', error);
+        .catch((error) => {
+          console.error("Error creating offer:", error);
         });
 
-        navigate('/dashboard/offer');
-    }
-    else {
+      navigate("/dashboard/offer");
+    } else {
       // Sending the data as JSON to the backend
-      fetch('http://localhost:4000/api/offer/create', {
-        method: 'POST',
+      fetch(`${import.meta.env.VITE_APP_BACKEND_URL}/api/offer/create`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(offerData),
       })
-        .then(res => res.json())
-        .then(data => {
-          console.log('Offer created:', data);
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Offer created:", data);
         })
-        .catch(error => {
-          console.error('Error creating offer:', error);
+        .catch((error) => {
+          console.error("Error creating offer:", error);
         });
 
-        navigate('/dashboard/offer');
+      navigate("/dashboard/offer");
     }
-
   };
 
   return (
-    <form onSubmit={handleCreateOffer} className="max-w-[1440px] mx-auto px-4 md:px-20 lg:px-28">
+    <form
+      onSubmit={handleCreateOffer}
+      className="max-w-[1440px] mx-auto px-4 md:px-20 lg:px-28"
+    >
       {currentSection === 1 && (
         <div>
           {/* Section 1: Basic Information */}
           <div className="flex bg-white shadow-xl flex-col lg:flex-row justify-between mb-10 border-l-2 border-primary-color px-8 py-8">
             <div className="flex lg:text-4xl items-center">
-              <h1 className="text-primary-color">Hello {user?.user?.firstname},</h1>
+              <h1 className="text-primary-color">
+                Hello {user?.user?.firstname},
+              </h1>
             </div>
             <div className="flex lg:text-4xl items-center">
               <h1 className="mr-1">{user?.user?.schoolName}</h1>
             </div>
           </div>
           <div className="text-center">
-            <h1 className="text-5xl font-bold text-primary-color mb-3">The Basic</h1>
-            <p>Please fill the form below to become a teacher or student or any thing else we can type here</p>
+            <h1 className="text-5xl font-bold text-primary-color mb-3">
+              The Basic
+            </h1>
+            <p>
+              Please fill the form below to become a teacher or student or any
+              thing else we can type here
+            </p>
           </div>
           <div className="bg-white shadow-xl p-4 rounded-lg">
             <div className="mt-10">
@@ -323,7 +336,9 @@ function AddOffer() {
               <div className="flex gap-3 flex-col md:flex-row lg:flex-row">
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Offer Title</span>
+                    <span className="label-text font-semibold">
+                      Offer Title
+                    </span>
                   </div>
                   <input
                     type="text"
@@ -336,7 +351,9 @@ function AddOffer() {
                 </label>
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Establishment concerned</span>
+                    <span className="label-text font-semibold">
+                      Establishment concerned
+                    </span>
                   </div>
                   <select
                     name="establishment"
@@ -352,7 +369,9 @@ function AddOffer() {
               <div className="flex gap-3 flex-col md:flex-row lg:flex-row">
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Offer Owner</span>
+                    <span className="label-text font-semibold">
+                      Offer Owner
+                    </span>
                   </div>
                   <input
                     type="text"
@@ -365,7 +384,9 @@ function AddOffer() {
                 </label>
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Type of contract accepted</span>
+                    <span className="label-text font-semibold">
+                      Type of contract accepted
+                    </span>
                   </div>
                   <select
                     name="acceptedContract"
@@ -377,12 +398,13 @@ function AddOffer() {
                     <option value="Part-Time">Part-Time</option>
                   </select>
                 </label>
-                
               </div>
               <div className="flex gap-3 flex-col md:flex-row lg:flex-row">
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Type of permanent contract</span>
+                    <span className="label-text font-semibold">
+                      Type of permanent contract
+                    </span>
                   </div>
                   <select
                     name="permanentContract"
@@ -396,7 +418,9 @@ function AddOffer() {
                 </label>
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Salary Package</span>
+                    <span className="label-text font-semibold">
+                      Salary Package
+                    </span>
                   </div>
                   <input
                     type="text"
@@ -415,7 +439,9 @@ function AddOffer() {
               <div className="flex gap-3 flex-col md:flex-row lg:flex-row">
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Type of intervention</span>
+                    <span className="label-text font-semibold">
+                      Type of intervention
+                    </span>
                   </div>
                   <select
                     name="interventionType"
@@ -429,7 +455,9 @@ function AddOffer() {
                 </label>
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Language of the intervention</span>
+                    <span className="label-text font-semibold">
+                      Language of the intervention
+                    </span>
                   </div>
                   <select
                     name="interventionLanguage"
@@ -445,7 +473,9 @@ function AddOffer() {
               <div className="flex gap-3 flex-col md:flex-row lg:flex-row">
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Level of learners</span>
+                    <span className="label-text font-semibold">
+                      Level of learners
+                    </span>
                   </div>
                   <select
                     name="learnerLevel"
@@ -459,7 +489,9 @@ function AddOffer() {
                 </label>
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Diploma prepared</span>
+                    <span className="label-text font-semibold">
+                      Diploma prepared
+                    </span>
                   </div>
                   <input
                     type="text"
@@ -474,7 +506,9 @@ function AddOffer() {
               <div className="flex gap-3 flex-col md:flex-row lg:flex-row">
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Number of learners</span>
+                    <span className="label-text font-semibold">
+                      Number of learners
+                    </span>
                   </div>
                   <input
                     type="number"
@@ -487,7 +521,9 @@ function AddOffer() {
                 </label>
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Minimum degree level to apply</span>
+                    <span className="label-text font-semibold">
+                      Minimum degree level to apply
+                    </span>
                   </div>
                   <select
                     name="minDegree"
@@ -519,11 +555,15 @@ function AddOffer() {
             </div>
             {/* Content Offer */}
             <div className="mt-16">
-              <h1 className="text-3xl text-primary-color text-center font-bold mb-7">Content of your offer</h1>
+              <h1 className="text-3xl text-primary-color text-center font-bold mb-7">
+                Content of your offer
+              </h1>
               <div className="flex gap-3 flex-col md:flex-row lg:flex-row">
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Teaching Subject</span>
+                    <span className="label-text font-semibold">
+                      Teaching Subject
+                    </span>
                   </div>
                   <select
                     name="teachingArea"
@@ -537,7 +577,9 @@ function AddOffer() {
                 </label>
                 <label className="form-control w-full">
                   <div className="label">
-                    <span className="label-text font-semibold">Teaching Level</span>
+                    <span className="label-text font-semibold">
+                      Teaching Level
+                    </span>
                   </div>
                   <select
                     name="learnerLevel"
@@ -592,7 +634,9 @@ function AddOffer() {
             <div>
               <label className="form-control w-full">
                 <div className="label">
-                  <span className="label-text font-semibold">Educational objectives</span>
+                  <span className="label-text font-semibold">
+                    Educational objectives
+                  </span>
                 </div>
                 <textarea
                   name="eduObjective"
@@ -606,7 +650,9 @@ function AddOffer() {
             <div>
               <label className="form-control w-full">
                 <div className="label">
-                  <span className="label-text font-semibold">Content of the intervention</span>
+                  <span className="label-text font-semibold">
+                    Content of the intervention
+                  </span>
                 </div>
                 <textarea
                   name="interventionContent"
@@ -666,10 +712,14 @@ function AddOffer() {
         <div>
           {/* Section 2: Logistics */}
           <div className="text-center mt-6">
-            <h1 className="text-5xl font-bold text-primary-color mb-3">Logistics</h1>
+            <h1 className="text-5xl font-bold text-primary-color mb-3">
+              Logistics
+            </h1>
           </div>
           <div className="bg-white shadow-lg rounded-md px-4 pb-12">
-            <h1 className="text-2xl text-center my-6 text-primary-color font-semibold">Logistics</h1>
+            <h1 className="text-2xl text-center my-6 text-primary-color font-semibold">
+              Logistics
+            </h1>
             <h1 className="font-bold text-xl">Presentation</h1>
             {/* presentation */}
             <div className=" border p-4 my-6  bg-white  rounded-lg">
@@ -911,7 +961,9 @@ function AddOffer() {
               </div>
             </div>
             {/* Remuneration and expenses */}
-            <h1 className="font-bold font-xl mt-12 mb-3">Remuneration and expenses</h1>
+            <h1 className="font-bold font-xl mt-12 mb-3">
+              Remuneration and expenses
+            </h1>
             <div className="p-4 border bg-white shadow-md rounded-lg mx-auto">
               <div className="space-y-4">
                 {/* Hourly Pay Option */}
@@ -938,7 +990,9 @@ function AddOffer() {
                       onChange={handleChange}
                       className="toggle toggle-success"
                     />
-                    <span className="text-gray-700">Remuneration at the daily rate</span>
+                    <span className="text-gray-700">
+                      Remuneration at the daily rate
+                    </span>
                   </label>
                 </div>
 
@@ -959,10 +1013,13 @@ function AddOffer() {
             </div>
 
             {/*  */}
-            <h1 className="mt-12 mb-2 font-bold text-xl">Administrative file</h1>
+            <h1 className="mt-12 mb-2 font-bold text-xl">
+              Administrative file
+            </h1>
             <div className="p-4 border mx-auto bg-white shadow-md rounded-lg">
               <h2 className="text-lg font-semibold mb-4">
-                Specify the documents required for the stakeholder's administrative file:
+                Specify the documents required for the stakeholder's
+                administrative file:
               </h2>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <label className="flex items-center space-x-2">
@@ -993,7 +1050,9 @@ function AddOffer() {
                     onChange={handleChange}
                     className="form-checkbox h-5 w-5"
                   />
-                  <span>Extract from the criminal record (less than 3 months)</span>
+                  <span>
+                    Extract from the criminal record (less than 3 months)
+                  </span>
                 </label>
                 <label className="flex items-center space-x-2">
                   <input
@@ -1069,21 +1128,27 @@ function AddOffer() {
             <div className="mt-8 border mx-auto bg-white shadow-md rounded p-6">
               <div className="space-y-4">
                 <div className="bg-gray-50 p-4 rounded border flex gap-7 items-center">
-                  <h2 className="font-semibold text-2xl text-primary-color">LinkedIn Share</h2>
+                  <h2 className="font-semibold text-2xl text-primary-color">
+                    LinkedIn Share
+                  </h2>
                   <p className="text-sm text-gray-600">
                     Your offer must be in "public" or "link only" status to use
                     this feature.
                   </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded border flex gap-7 items-center">
-                  <h2 className="font-semibold  text-2xl text-primary-color">Internal sharing</h2>
+                  <h2 className="font-semibold  text-2xl text-primary-color">
+                    Internal sharing
+                  </h2>
                   <p className="text-sm text-gray-600">
                     Your offer must be in "public" or "link only" status to use
                     this feature.
                   </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded border flex gap-7 items-center">
-                  <h2 className="font-semibold  text-2xl text-primary-color">Tenors Broadcast</h2>
+                  <h2 className="font-semibold  text-2xl text-primary-color">
+                    Tenors Broadcast
+                  </h2>
                   <p className="text-sm text-gray-600">
                     Your offer must be in "public" or "link only" status to use
                     this feature.

@@ -1,11 +1,15 @@
+import {
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+} from "firebase/auth";
 import React, { useState } from "react";
+import { FaFacebook } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation } from "react-router-dom";
 import signUpImg from "../../assets/signUp/image.png";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
-import { FacebookAuthProvider, GoogleAuthProvider, getAuth } from "firebase/auth";
-import { signInWithPopup } from "firebase/auth";
-import { app } from '../../auth/firebase';
+import { app } from "../../auth/firebase";
 import { useSignup } from "../../hooks/useSignup";
 
 function SignUp() {
@@ -18,7 +22,7 @@ function SignUp() {
     email: "",
     password: "",
     confirmPassword: "",
-    role: role,  // Store the role in formData
+    role: role, // Store the role in formData
   });
 
   const [otpSent, setOtpSent] = useState(false);
@@ -42,24 +46,34 @@ function SignUp() {
     provider.setCustomParameters({ prompt: "select_account" });
     try {
       const resultsFromGoogle = await signInWithPopup(auth, provider);
-      const response = await gSignup(resultsFromGoogle.user.displayName.split(' ')[0], resultsFromGoogle.user.displayName.split(' ')[1], resultsFromGoogle.user.email, role);
+      const response = await gSignup(
+        resultsFromGoogle.user.displayName.split(" ")[0],
+        resultsFromGoogle.user.displayName.split(" ")[1],
+        resultsFromGoogle.user.email,
+        role
+      );
       if (response) alert(response);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleFacebookLogin = async () => {
     const provider = new FacebookAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
     try {
       const resultsFromFacebook = await signInWithPopup(auth, provider);
-      const response = await gSignup(resultsFromFacebook.user.displayName.split(' ')[0], resultsFromFacebook.user.displayName.split(' ')[1], resultsFromFacebook.user.email, role);
+      const response = await gSignup(
+        resultsFromFacebook.user.displayName.split(" ")[0],
+        resultsFromFacebook.user.displayName.split(" ")[1],
+        resultsFromFacebook.user.email,
+        role
+      );
       if (response) alert(response);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const generateOtp = () => {
     return Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit OTP
@@ -77,13 +91,16 @@ function SignUp() {
     setGeneratedOtp(generatedOtp);
 
     try {
-      const response = await fetch('http://localhost:4000/api/user/signupOTP', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: formData.email, otp: generatedOtp }), // Send email and OTP to the backend
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/signupOTP`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: formData.email, otp: generatedOtp }), // Send email and OTP to the backend
+        }
+      );
 
       if (response.ok) {
         setOtpSent(true);
@@ -112,7 +129,13 @@ function SignUp() {
   };
 
   const handleSignUp = async () => {
-    const response = await signup(formData.firstName, formData.lastName, formData.email, formData.password, formData.role);
+    const response = await signup(
+      formData.firstName,
+      formData.lastName,
+      formData.email,
+      formData.password,
+      formData.role
+    );
     if (response) {
       alert(response);
     }
@@ -140,7 +163,10 @@ function SignUp() {
             </p>
             <h6 className="text-center mb-4">Getting started is easy</h6>
             <div className="flex gap-2 justify-center">
-              <button className="btn border-primary-color font-medium" onClick={handleGoogleLogin}>
+              <button
+                className="btn border-primary-color font-medium"
+                onClick={handleGoogleLogin}
+              >
                 <FcGoogle className="text-3xl" />
                 Google
               </button>
@@ -216,7 +242,9 @@ function SignUp() {
                 </form>
               ) : (
                 <form onSubmit={handleOtpSubmit}>
-                  <p className="my-3 text-lg">Please enter the OTP you received on your Mail</p>
+                  <p className="my-3 text-lg">
+                    Please enter the OTP you received on your Mail
+                  </p>
                   <div className="form-control">
                     <input
                       type="text"

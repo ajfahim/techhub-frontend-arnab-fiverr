@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { RxCross2 } from "react-icons/rx";
 import { CiShoppingTag } from "react-icons/ci";
+import { RxCross2 } from "react-icons/rx";
 import { useAuthContext } from "../../hooks/useAuthContext";
 
 const Profile = () => {
@@ -51,37 +51,41 @@ const Profile = () => {
     certifications: [],
     languages: [],
     computerLanguages: "",
-    establishmentGroups: []
+    establishmentGroups: [],
   });
 
   const [editingField, setEditingField] = useState(null);
   const [activeTab, setActiveTab] = useState(1);
 
   const fetchCurrentUser = async () => {
-    const response = await fetch(`http://localhost:4000/api/user/getUser/${user?.user?._id}`);
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/getUser/${
+        user?.user?._id
+      }`
+    );
     const data = await response.json();
     console.log("current user", data);
     setCurrentUser(data);
-  }
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0 });
-  }
+  };
 
   const gotPage1 = () => {
     setActiveTab(1);
     scrollToTop();
-  }
+  };
 
   const gotpage2 = () => {
     setActiveTab(2);
     scrollToTop();
-  }
+  };
 
   const gotpage3 = () => {
     setActiveTab(3);
     scrollToTop();
-  }
+  };
 
   useEffect(() => {
     if (user?.user?._id) {
@@ -93,7 +97,7 @@ const Profile = () => {
     const { name, value, type, checked } = e.target;
     setCurrentUser((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -102,7 +106,7 @@ const Profile = () => {
       setCurrentUser((prev) => ({
         ...prev,
         skills: [...prev.skills, prev.newSkill],
-        newSkill: ""
+        newSkill: "",
       }));
     }
   };
@@ -110,7 +114,7 @@ const Profile = () => {
   const handleRemoveSkill = (skillToRemove) => {
     setCurrentUser((prev) => ({
       ...prev,
-      skills: prev.skills.filter(skill => skill !== skillToRemove)
+      skills: prev.skills.filter((skill) => skill !== skillToRemove),
     }));
   };
 
@@ -119,7 +123,7 @@ const Profile = () => {
       setCurrentUser((prev) => ({
         ...prev,
         diplomas: [...prev.diplomas, prev.newDiploma],
-        newDiploma: ""
+        newDiploma: "",
       }));
     }
   };
@@ -129,7 +133,7 @@ const Profile = () => {
       setCurrentUser((prev) => ({
         ...prev,
         certifications: [...prev.certifications, prev.newCertification],
-        newCertification: ""
+        newCertification: "",
       }));
     }
   };
@@ -139,23 +143,26 @@ const Profile = () => {
       setCurrentUser((prev) => ({
         ...prev,
         establishmentGroups: [...prev.establishmentGroups, prev.newGroup],
-        newGroup: ""
+        newGroup: "",
       }));
     }
   };
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:4000/api/user/updateUser/${user?.user?._id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(currentUser),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/updateUser/${
+          user?.user?._id
+        }`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(currentUser),
+        }
+      );
       const data = await response.json();
       console.log("Profile updated:", data);
       gotPage1();
@@ -165,13 +172,23 @@ const Profile = () => {
   };
 
   return (
-    <div className={`${activeTab === 1 && 'pb-[2500px]'} ${activeTab === 2 && 'pb-[1300px]'} ${activeTab === 3 && 'pb-[2700px]'} mb-10`}>
+    <div
+      className={`${activeTab === 1 && "pb-[2500px]"} ${
+        activeTab === 2 && "pb-[1300px]"
+      } ${activeTab === 3 && "pb-[2700px]"} mb-10`}
+    >
       <div className="bg-[#2f9995] p-5 h-52">
         <div className="flex justify-between">
-          <button className="bg-white py-2 px-4 rounded-2xl">Change my cover</button>
+          <button className="bg-white py-2 px-4 rounded-2xl">
+            Change my cover
+          </button>
           <div>
-            <button className="bg-white py-2 px-4 rounded-2xl mr-3">See my profile</button>
-            <button className="bg-white py-2 px-4 rounded-2xl">Share my profile</button>
+            <button className="bg-white py-2 px-4 rounded-2xl mr-3">
+              See my profile
+            </button>
+            <button className="bg-white py-2 px-4 rounded-2xl">
+              Share my profile
+            </button>
           </div>
         </div>
         <div className="w-3/4 mx-auto">
@@ -183,11 +200,17 @@ const Profile = () => {
                 </div>
               </div>
               <div>
-                <h3 className="text-white text-3xl font-semibold pb-3 pt-6">{currentUser.firstname} {currentUser.lastname}</h3>
+                <h3 className="text-white text-3xl font-semibold pb-3 pt-6">
+                  {currentUser.firstname} {currentUser.lastname}
+                </h3>
                 <p>Big business</p>
               </div>
             </div>
-            <select className="bg-white py-2 px-4 rounded-2xl mb-16" name="" id="">
+            <select
+              className="bg-white py-2 px-4 rounded-2xl mb-16"
+              name=""
+              id=""
+            >
               <option value="1st">Link Only</option>
               <option value="1st">1st</option>
               <option value="1st">1st</option>
@@ -195,9 +218,11 @@ const Profile = () => {
             </select>
           </div>
           <div className="text-right">
-            <button className="text-white bg-[#2f9995] py-1 px-3 rounded-2xl">Edit your resume</button>
+            <button className="text-white bg-[#2f9995] py-1 px-3 rounded-2xl">
+              Edit your resume
+            </button>
           </div>
-          {activeTab === 1 &&
+          {activeTab === 1 && (
             <div>
               <div className="border rounded-md p-5 mt-2 mb-2">
                 <h3 className="text-3xl">Personal Information (Optional)</h3>
@@ -246,7 +271,12 @@ const Profile = () => {
                 <h5 className="text-xl pb-3">Availability Calendar</h5>
                 <div>
                   <Calendar
-                    onChange={(date) => setCurrentUser((prev) => ({ ...prev, availableDate: date + 1 }))}
+                    onChange={(date) =>
+                      setCurrentUser((prev) => ({
+                        ...prev,
+                        availableDate: date + 1,
+                      }))
+                    }
                     value={currentUser.availableDate}
                     name="availableDate"
                   />
@@ -254,7 +284,15 @@ const Profile = () => {
                 <div className="flex gap-10 pt-5">
                   <div>
                     <h5 className="text-xl pb-3">Days of week</h5>
-                    {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day) => (
+                    {[
+                      "Monday",
+                      "Tuesday",
+                      "Wednesday",
+                      "Thursday",
+                      "Friday",
+                      "Saturday",
+                      "Sunday",
+                    ].map((day) => (
                       <div key={day}>
                         <input
                           className="mr-2 border border-[#2f9995]"
@@ -263,10 +301,16 @@ const Profile = () => {
                           value={day}
                           checked={currentUser.availableInWeek.includes(day)}
                           onChange={(e) => {
-                            const newAvailableInWeek = currentUser.availableInWeek.includes(day)
-                              ? currentUser.availableInWeek.filter((d) => d !== day)
-                              : [...currentUser.availableInWeek, day];
-                            setCurrentUser((prev) => ({ ...prev, availableInWeek: newAvailableInWeek }));
+                            const newAvailableInWeek =
+                              currentUser.availableInWeek.includes(day)
+                                ? currentUser.availableInWeek.filter(
+                                    (d) => d !== day
+                                  )
+                                : [...currentUser.availableInWeek, day];
+                            setCurrentUser((prev) => ({
+                              ...prev,
+                              availableInWeek: newAvailableInWeek,
+                            }));
                           }}
                         />
                         <span>{day}</span>
@@ -284,10 +328,16 @@ const Profile = () => {
                           value={time}
                           checked={currentUser.availableInDay.includes(time)}
                           onChange={(e) => {
-                            const newAvailableInDay = currentUser.availableInDay.includes(time)
-                              ? currentUser.availableInDay.filter((t) => t !== time)
-                              : [...currentUser.availableInDay, time];
-                            setCurrentUser((prev) => ({ ...prev, availableInDay: newAvailableInDay }));
+                            const newAvailableInDay =
+                              currentUser.availableInDay.includes(time)
+                                ? currentUser.availableInDay.filter(
+                                    (t) => t !== time
+                                  )
+                                : [...currentUser.availableInDay, time];
+                            setCurrentUser((prev) => ({
+                              ...prev,
+                              availableInDay: newAvailableInDay,
+                            }));
                           }}
                         />
                         <span>{time}</span>
@@ -503,12 +553,17 @@ const Profile = () => {
                 </div>
               </div>
               <div className="text-center">
-                <button className="text-white bg-[#2f9995] py-2 mt-5 cursor-pointer px-6 rounded-md" onClick={gotpage2}>Next</button>
+                <button
+                  className="text-white bg-[#2f9995] py-2 mt-5 cursor-pointer px-6 rounded-md"
+                  onClick={gotpage2}
+                >
+                  Next
+                </button>
               </div>
             </div>
-          }
+          )}
 
-          {activeTab === 2 &&
+          {activeTab === 2 && (
             <div>
               <div className="border rounded-md p-5 mt-7 mb-2">
                 <h5 className="text-xl">Additional Notes</h5>
@@ -561,7 +616,9 @@ const Profile = () => {
                   </div>
                   {editingField !== "professionalCareer" ? (
                     <>
-                      <p className="text-justify pt-8 pl-5">{currentUser.professionalCareer}</p>
+                      <p className="text-justify pt-8 pl-5">
+                        {currentUser.professionalCareer}
+                      </p>
                       <div className="bg-[#2f9995] rounded-b-md p-6 mt-10 flex gap-5 justify-end">
                         <button
                           className="bg-white text-[#2f9995] px-6 py-2 rounded-md"
@@ -599,7 +656,9 @@ const Profile = () => {
                   </div>
                   {editingField !== "studentPlan" ? (
                     <>
-                      <p className="text-justify pt-8 pl-5">{currentUser.studentPlan}</p>
+                      <p className="text-justify pt-8 pl-5">
+                        {currentUser.studentPlan}
+                      </p>
                       <div className="bg-[#2f9995] rounded-b-md p-6 mt-10 flex gap-5 justify-end">
                         <button
                           className="bg-white text-[#2f9995] px-6 py-2 rounded-md"
@@ -630,19 +689,34 @@ const Profile = () => {
                 </div>
               </div>
               <div className="text-center">
-                <button className="text-white bg-[#2f9995] py-2 mt-5 cursor-pointer px-6 rounded-md mr-5" onClick={gotPage1}>Previous</button>
-                <button className="text-white bg-[#2f9995] py-2 mt-5 cursor-pointer px-6 rounded-md" onClick={gotpage3}>Next</button>
+                <button
+                  className="text-white bg-[#2f9995] py-2 mt-5 cursor-pointer px-6 rounded-md mr-5"
+                  onClick={gotPage1}
+                >
+                  Previous
+                </button>
+                <button
+                  className="text-white bg-[#2f9995] py-2 mt-5 cursor-pointer px-6 rounded-md"
+                  onClick={gotpage3}
+                >
+                  Next
+                </button>
               </div>
             </div>
-          }
+          )}
 
-          {activeTab === 3 &&
+          {activeTab === 3 && (
             <div>
               <div className="border rounded-md p-5 mt-7 mb-2">
                 <h5 className="text-xl pb-3">You are Interested in</h5>
                 <div className="flex gap-10 pt-5">
                   <div>
-                    {["Courses", "Career Advice", "TP", "Educational Engineering"].map((interest) => (
+                    {[
+                      "Courses",
+                      "Career Advice",
+                      "TP",
+                      "Educational Engineering",
+                    ].map((interest) => (
                       <div key={interest}>
                         <input
                           className="mr-2 border border-[#2f9995]"
@@ -651,10 +725,16 @@ const Profile = () => {
                           value={interest}
                           checked={currentUser.interestedBy.includes(interest)}
                           onChange={(e) => {
-                            const newInterestedBy = currentUser.interestedBy.includes(interest)
-                              ? currentUser.interestedBy.filter((i) => i !== interest)
-                              : [...currentUser.interestedBy, interest];
-                            setCurrentUser((prev) => ({ ...prev, interestedBy: newInterestedBy }));
+                            const newInterestedBy =
+                              currentUser.interestedBy.includes(interest)
+                                ? currentUser.interestedBy.filter(
+                                    (i) => i !== interest
+                                  )
+                                : [...currentUser.interestedBy, interest];
+                            setCurrentUser((prev) => ({
+                              ...prev,
+                              interestedBy: newInterestedBy,
+                            }));
                           }}
                         />
                         <span>{interest}</span>
@@ -662,24 +742,34 @@ const Profile = () => {
                     ))}
                   </div>
                   <div>
-                    {["Conferences", "Juries", "TD", "Other"].map((interest) => (
-                      <div key={interest}>
-                        <input
-                          className="mr-2 border border-[#2f9995]"
-                          type="checkbox"
-                          name="interestedBy"
-                          value={interest}
-                          checked={currentUser.interestedBy.includes(interest)}
-                          onChange={(e) => {
-                            const newInterestedBy = currentUser.interestedBy.includes(interest)
-                              ? currentUser.interestedBy.filter((i) => i !== interest)
-                              : [...currentUser.interestedBy, interest];
-                            setCurrentUser((prev) => ({ ...prev, interestedBy: newInterestedBy }));
-                          }}
-                        />
-                        <span>{interest}</span>
-                      </div>
-                    ))}
+                    {["Conferences", "Juries", "TD", "Other"].map(
+                      (interest) => (
+                        <div key={interest}>
+                          <input
+                            className="mr-2 border border-[#2f9995]"
+                            type="checkbox"
+                            name="interestedBy"
+                            value={interest}
+                            checked={currentUser.interestedBy.includes(
+                              interest
+                            )}
+                            onChange={(e) => {
+                              const newInterestedBy =
+                                currentUser.interestedBy.includes(interest)
+                                  ? currentUser.interestedBy.filter(
+                                      (i) => i !== interest
+                                    )
+                                  : [...currentUser.interestedBy, interest];
+                              setCurrentUser((prev) => ({
+                                ...prev,
+                                interestedBy: newInterestedBy,
+                              }));
+                            }}
+                          />
+                          <span>{interest}</span>
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
@@ -700,7 +790,12 @@ const Profile = () => {
                 <h5 className="text-xl pb-3">Vos motivations</h5>
                 <div className="flex gap-10 pt-5">
                   <div>
-                    {["Pass on my knowledge", "Additional Income", "Old School", "Business Promotion"].map((motivation) => (
+                    {[
+                      "Pass on my knowledge",
+                      "Additional Income",
+                      "Old School",
+                      "Business Promotion",
+                    ].map((motivation) => (
                       <div key={motivation}>
                         <input
                           className="mr-2 border border-[#2f9995]"
@@ -709,10 +804,16 @@ const Profile = () => {
                           value={motivation}
                           checked={currentUser.motivations.includes(motivation)}
                           onChange={(e) => {
-                            const newMotivations = currentUser.motivations.includes(motivation)
-                              ? currentUser.motivations.filter((m) => m !== motivation)
-                              : [...currentUser.motivations, motivation];
-                            setCurrentUser((prev) => ({ ...prev, motivations: newMotivations }));
+                            const newMotivations =
+                              currentUser.motivations.includes(motivation)
+                                ? currentUser.motivations.filter(
+                                    (m) => m !== motivation
+                                  )
+                                : [...currentUser.motivations, motivation];
+                            setCurrentUser((prev) => ({
+                              ...prev,
+                              motivations: newMotivations,
+                            }));
                           }}
                         />
                         <span>{motivation}</span>
@@ -720,7 +821,12 @@ const Profile = () => {
                     ))}
                   </div>
                   <div>
-                    {["Spotting Talent", "Research", "Mentorship", "Innovation"].map((motivation) => (
+                    {[
+                      "Spotting Talent",
+                      "Research",
+                      "Mentorship",
+                      "Innovation",
+                    ].map((motivation) => (
                       <div key={motivation}>
                         <input
                           className="mr-2 border border-[#2f9995]"
@@ -729,10 +835,16 @@ const Profile = () => {
                           value={motivation}
                           checked={currentUser.motivations.includes(motivation)}
                           onChange={(e) => {
-                            const newMotivations = currentUser.motivations.includes(motivation)
-                              ? currentUser.motivations.filter((m) => m !== motivation)
-                              : [...currentUser.motivations, motivation];
-                            setCurrentUser((prev) => ({ ...prev, motivations: newMotivations }));
+                            const newMotivations =
+                              currentUser.motivations.includes(motivation)
+                                ? currentUser.motivations.filter(
+                                    (m) => m !== motivation
+                                  )
+                                : [...currentUser.motivations, motivation];
+                            setCurrentUser((prev) => ({
+                              ...prev,
+                              motivations: newMotivations,
+                            }));
                           }}
                         />
                         <span>{motivation}</span>
@@ -853,8 +965,13 @@ const Profile = () => {
                       <p className="text-white">{diploma}</p>
                       <RxCross2
                         onClick={() => {
-                          const updatedDiplomas = currentUser.diplomas.filter((_, i) => i !== index);
-                          setCurrentUser((prev) => ({ ...prev, diplomas: updatedDiplomas }));
+                          const updatedDiplomas = currentUser.diplomas.filter(
+                            (_, i) => i !== index
+                          );
+                          setCurrentUser((prev) => ({
+                            ...prev,
+                            diplomas: updatedDiplomas,
+                          }));
                         }}
                       />
                     </div>
@@ -871,7 +988,8 @@ const Profile = () => {
                   />
                   <button
                     className="bg-white text-[#2f9995] px-6 py-2 rounded-md mr-2"
-                    onClick={handleAddDiploma}>
+                    onClick={handleAddDiploma}
+                  >
                     Add
                   </button>
                 </div>
@@ -889,8 +1007,14 @@ const Profile = () => {
                       <p className="text-white">{certification}</p>
                       <RxCross2
                         onClick={() => {
-                          const updatedCertifications = currentUser.certifications.filter((_, i) => i !== index);
-                          setCurrentUser((prev) => ({ ...prev, certifications: updatedCertifications }));
+                          const updatedCertifications =
+                            currentUser.certifications.filter(
+                              (_, i) => i !== index
+                            );
+                          setCurrentUser((prev) => ({
+                            ...prev,
+                            certifications: updatedCertifications,
+                          }));
                         }}
                       />
                     </div>
@@ -907,53 +1031,72 @@ const Profile = () => {
                   />
                   <button
                     className="bg-white text-[#2f9995] px-6 py-2 rounded-md mr-2"
-                    onClick={handleAddCertification}>
+                    onClick={handleAddCertification}
+                  >
                     Add
                   </button>
                 </div>
               </div>
               <div className="border rounded-md p-5 mt-7 mb-2">
-                <h5 className="text-xl pb-3">Languages mastered to intervene</h5>
+                <h5 className="text-xl pb-3">
+                  Languages mastered to intervene
+                </h5>
                 <div className="flex gap-10 pt-5">
                   <div>
-                    {["French", "Spanish", "Italian", "Chinese (Mandarin)"].map((language) => (
-                      <div key={language}>
-                        <input
-                          className="mr-2 border border-[#2f9995]"
-                          type="checkbox"
-                          name="languages"
-                          value={language}
-                          checked={currentUser.languages.includes(language)}
-                          onChange={(e) => {
-                            const newLanguages = currentUser.languages.includes(language)
-                              ? currentUser.languages.filter((lang) => lang !== language)
-                              : [...currentUser.languages, language];
-                            setCurrentUser((prev) => ({ ...prev, languages: newLanguages }));
-                          }}
-                        />
-                        <span>{language}</span>
-                      </div>
-                    ))}
+                    {["French", "Spanish", "Italian", "Chinese (Mandarin)"].map(
+                      (language) => (
+                        <div key={language}>
+                          <input
+                            className="mr-2 border border-[#2f9995]"
+                            type="checkbox"
+                            name="languages"
+                            value={language}
+                            checked={currentUser.languages.includes(language)}
+                            onChange={(e) => {
+                              const newLanguages =
+                                currentUser.languages.includes(language)
+                                  ? currentUser.languages.filter(
+                                      (lang) => lang !== language
+                                    )
+                                  : [...currentUser.languages, language];
+                              setCurrentUser((prev) => ({
+                                ...prev,
+                                languages: newLanguages,
+                              }));
+                            }}
+                          />
+                          <span>{language}</span>
+                        </div>
+                      )
+                    )}
                   </div>
                   <div>
-                    {["English", "German", "Arabic", "Russian"].map((language) => (
-                      <div key={language}>
-                        <input
-                          className="mr-2 border border-[#2f9995]"
-                          type="checkbox"
-                          name="languages"
-                          value={language}
-                          checked={currentUser.languages.includes(language)}
-                          onChange={(e) => {
-                            const newLanguages = currentUser.languages.includes(language)
-                              ? currentUser.languages.filter((lang) => lang !== language)
-                              : [...currentUser.languages, language];
-                            setCurrentUser((prev) => ({ ...prev, languages: newLanguages }));
-                          }}
-                        />
-                        <span>{language}</span>
-                      </div>
-                    ))}
+                    {["English", "German", "Arabic", "Russian"].map(
+                      (language) => (
+                        <div key={language}>
+                          <input
+                            className="mr-2 border border-[#2f9995]"
+                            type="checkbox"
+                            name="languages"
+                            value={language}
+                            checked={currentUser.languages.includes(language)}
+                            onChange={(e) => {
+                              const newLanguages =
+                                currentUser.languages.includes(language)
+                                  ? currentUser.languages.filter(
+                                      (lang) => lang !== language
+                                    )
+                                  : [...currentUser.languages, language];
+                              setCurrentUser((prev) => ({
+                                ...prev,
+                                languages: newLanguages,
+                              }));
+                            }}
+                          />
+                          <span>{language}</span>
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
@@ -979,8 +1122,14 @@ const Profile = () => {
                     <p className="text-white">{group}</p>
                     <RxCross2
                       onClick={() => {
-                        const updatedGroups = currentUser.establishmentGroups.filter((_, i) => i !== index);
-                        setCurrentUser((prev) => ({ ...prev, establishmentGroups: updatedGroups }));
+                        const updatedGroups =
+                          currentUser.establishmentGroups.filter(
+                            (_, i) => i !== index
+                          );
+                        setCurrentUser((prev) => ({
+                          ...prev,
+                          establishmentGroups: updatedGroups,
+                        }));
                       }}
                     />
                   </div>
@@ -996,7 +1145,8 @@ const Profile = () => {
                   />
                   <button
                     className="bg-white text-[#2f9995] px-6 py-2 rounded-md mr-2"
-                    onClick={handleAddEstablishment}>
+                    onClick={handleAddEstablishment}
+                  >
                     Add
                   </button>
                 </div>
@@ -1016,7 +1166,7 @@ const Profile = () => {
                 </button>
               </div>
             </div>
-          }
+          )}
         </div>
       </div>
     </div>

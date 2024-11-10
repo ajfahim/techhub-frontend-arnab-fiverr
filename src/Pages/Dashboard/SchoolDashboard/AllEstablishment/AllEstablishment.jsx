@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
-import { LuSchool2 } from "react-icons/lu";
 import { FaPlus } from "react-icons/fa";
+import { LuSchool2 } from "react-icons/lu";
 import { Link } from "react-router-dom";
-import bgImg from '../../../../../src/assets/Teachers/img1.png'
 import hasina from "../../../../../src/assets/Teachers/hasina.png";
+import bgImg from "../../../../../src/assets/Teachers/img1.png";
 import ButtonGroup from "../../../../Components/ButtonGroup/ButtonGroup"; // Importing ButtonGroup component
 
 function AllEstablishment() {
@@ -13,7 +13,9 @@ function AllEstablishment() {
 
   const fetchEstablishments = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/user/getUser"); // Fetching the establishments data from the API
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/getUser`
+      ); // Fetching the establishments data from the API
       const data = await response.json();
       const filteredData = data.filter((user) => user.role === "school-owner"); // Filtering by role to get only school owners
       setEstablishments(filteredData);
@@ -61,12 +63,7 @@ function AllEstablishment() {
 
       {/* Implementing the ButtonGroup component for filtering */}
       <ButtonGroup
-        labels={[
-          "address",
-          "Department",
-          "establishmentType",
-          "keywords",
-        ]}
+        labels={["address", "Department", "establishmentType", "keywords"]}
         onSearch={handleSearch} // Passing the search handler to ButtonGroup
       />
 

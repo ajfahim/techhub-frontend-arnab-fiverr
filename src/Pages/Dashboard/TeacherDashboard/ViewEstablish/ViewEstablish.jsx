@@ -1,9 +1,8 @@
-import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 import { PiPresentationChartBold } from "react-icons/pi";
-import { useEffect, useState } from "react";
-import Navbar from "../../../../Shared/Navbar/Navbar";
+import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "../../../../hooks/useAuthContext";
 
 function ViewEstablish() {
@@ -15,7 +14,7 @@ function ViewEstablish() {
     const fetchestablishData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/api/user/getUser/${id}`
+          `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/getUser/${id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch the establish data.");
@@ -34,8 +33,6 @@ function ViewEstablish() {
 
   return (
     <div>
-     
-
       <div className="px-4 md:px-10  lg:px-28 my-6 max-w-[1440px] mx-auto">
         <div className="bg-primary-color text-center text-white py-5">
           <h1 className="font-bold text-5xl my-3">

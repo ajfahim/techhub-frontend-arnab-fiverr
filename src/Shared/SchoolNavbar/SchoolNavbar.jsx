@@ -1,18 +1,22 @@
+import { useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { LuSchool2 } from "react-icons/lu";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { useEffect, useState } from "react";
 
 function SchoolNavbar() {
   const { user } = useAuthContext();
-  const [school,setSchool] = useState(null);
-  const fetchSchool = async()=>{
-    const response = await fetch(`http://localhost:4000/api/user/getUser/${user?.user?._id}`);
+  const [school, setSchool] = useState(null);
+  const fetchSchool = async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/getUser/${
+        user?.user?._id
+      }`
+    );
 
     const data = await response.json();
 
     setSchool(data);
-  }
+  };
 
   useEffect(() => {
     if (user?.user?._id) {
@@ -32,4 +36,4 @@ function SchoolNavbar() {
     </div>
   );
 }
-export default SchoolNavbar
+export default SchoolNavbar;

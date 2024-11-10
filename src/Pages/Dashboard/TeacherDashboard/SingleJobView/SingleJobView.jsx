@@ -1,14 +1,13 @@
-import { AiOutlineShareAlt } from "react-icons/ai";
-import TeacherDashboardNavbar from "../../../../Shared/TeacherDashboardNavbar/TeacherDashboardNavbar"
-import { IoLocationOutline } from "react-icons/io5";
-import { GoGoal, GoInfo } from "react-icons/go";
-import { MdDescription, MdLocationOn, MdSchool, MdSlideshow, MdTagFaces } from "react-icons/md";
-import { GiTeacher } from "react-icons/gi";
-import { BsFile, BsFiles, BsFilterSquare } from "react-icons/bs";
-import { IoIosArrowDropright } from "react-icons/io";
-import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
+import { useKeenSlider } from "keen-slider/react";
 import { useEffect, useState } from "react";
+import { AiOutlineShareAlt } from "react-icons/ai";
+import { BsFiles, BsFilterSquare } from "react-icons/bs";
+import { GiTeacher } from "react-icons/gi";
+import { GoGoal, GoInfo } from "react-icons/go";
+import { IoIosArrowDropright } from "react-icons/io";
+import { IoLocationOutline } from "react-icons/io5";
+import { MdLocationOn, MdSlideshow } from "react-icons/md";
 import { useLocation, useParams } from "react-router-dom";
 function SingleJobView() {
   const { id } = useParams();
@@ -17,18 +16,23 @@ function SingleJobView() {
   const school = location.state?.school;
   const jobId = location.state?.jobId;
 
-  
   const [jobInfos, setJobinfos] = useState({});
-  const [schoolInfo,setSchoolInfo]=useState(null);
+  const [schoolInfo, setSchoolInfo] = useState(null);
 
   const fetchJob = async () => {
-    const response = await fetch(`http://localhost:4000/api/offer/jobs/${id}`);
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_BACKEND_URL}/api/offer/jobs/${id}`
+    );
     const data = await response.json();
     setJobinfos(data);
     console.log("jobs", data);
   };
   const fetchSchool = async () => {
-    const response = await fetch(`http://localhost:4000/api/user/getSchools/${school?._id}`);
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/getSchools/${
+        school?._id
+      }`
+    );
     const data = await response.json();
     setSchoolInfo(data);
     console.log("school", data);
@@ -330,9 +334,7 @@ function SingleJobView() {
                 Education goals
               </h2>
             </div>
-            <p className="text-gray-700">
-              {jobInfos?.eduObjective}
-            </p>
+            <p className="text-gray-700">{jobInfos?.eduObjective}</p>
           </div>
           {/* Presentation of the establishment */}
           <div className="bg-white border p-4 rounded-lg shadow-md my-12 ">
@@ -487,4 +489,4 @@ function SingleJobView() {
     </div>
   );
 }
-export default SingleJobView
+export default SingleJobView;

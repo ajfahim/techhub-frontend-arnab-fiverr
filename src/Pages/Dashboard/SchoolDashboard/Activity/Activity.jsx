@@ -1,31 +1,21 @@
-import CountUp from "react-countup";
-import { FaCloudDownloadAlt, FaDownload, FaInfoCircle, FaTrashAlt } from "react-icons/fa";
-import { GiProcessor } from "react-icons/gi";
-import { GoPlus } from "react-icons/go";
-import { IoMdInformationCircle } from "react-icons/io";
-import { IoHomeOutline, IoNotificationsOutline } from "react-icons/io5";
-import { MdDelete, MdOutlineLocalOffer } from "react-icons/md";
-import { Link } from "react-router-dom";
-import { Bar } from "react-chartjs-2";
-import React, { useEffect, useState } from "react";
 import {
-  IoIosArchive,
-  IoIosSettings,
-  IoIosTrash,
-  IoIosEye,
-} from "react-icons/io";
-import {
-  Chart as ChartJS,
   BarElement,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
   LinearScale,
   Tooltip,
-  Legend,
 } from "chart.js";
-import { LuSchool2 } from "react-icons/lu";
+import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import CountUp from "react-countup";
 import { CgProfile } from "react-icons/cg";
-import { ImFolderDownload } from "react-icons/im";
-import { AiOutlineInfoCircle } from "react-icons/ai";
+import { GiProcessor } from "react-icons/gi";
+import { GoPlus } from "react-icons/go";
+import { IoHomeOutline, IoNotificationsOutline } from "react-icons/io5";
+import { LuSchool2 } from "react-icons/lu";
+import { MdOutlineLocalOffer } from "react-icons/md";
+import { Link } from "react-router-dom";
 import { useAuthContext } from "../../../../hooks/useAuthContext";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
@@ -80,14 +70,20 @@ function Activity() {
   };
 
   const fetchOffers = async () => {
-    const response = await fetch(`http://localhost:4000/api/offer/getOffers/schoolDashboard/${user?.user?._id}`);
+    const response = await fetch(
+      `${
+        import.meta.env.VITE_APP_BACKEND_URL
+      }/api/offer/getOffers/schoolDashboard/${user?.user?._id}`
+    );
     const data = await response.json();
     console.log("offers", data);
     setoffers(data);
-  }
+  };
   const fetchApplication = async () => {
     const response = await fetch(
-      `http://localhost:4000/api/application/getapplicationBySchool/${user?.user?._id}`
+      `${
+        import.meta.env.VITE_APP_BACKEND_URL
+      }/api/application/getapplicationBySchool/${user?.user?._id}`
     );
     const data = await response.json();
     setreceivedApplications(data);
@@ -106,7 +102,9 @@ function Activity() {
         <div className="flex flex-col lg:flex-row justify-between mb-10">
           <div className="flex lg:text-4xl items-center">
             <CgProfile className="text-5xl mr-1 text-primary-color" />
-            <h1 className="text-primary-color">Hellow {user?.user?.firstname}</h1>
+            <h1 className="text-primary-color">
+              Hellow {user?.user?.firstname}
+            </h1>
           </div>
           <div className="flex lg:text-4xl items-center">
             <h1 className="mr-1 ">{user?.user?.schoolName}</h1>
@@ -119,7 +117,7 @@ function Activity() {
         </div>
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-bold">Your Activity</h1>
-          <Link to={'/dashboard/addoffer'}>
+          <Link to={"/dashboard/addoffer"}>
             <button className="btn bg-primary-color text-white flex items-center gap-2 px-4 py-2 rounded-md">
               <GoPlus />
               Add an Offer
@@ -132,7 +130,10 @@ function Activity() {
               <h1 className="text-lg font-semibold">
                 Application to be Processed
               </h1>
-              <Link to={'/dashboard/applicationreceived'} className="btn bg-primary-color bg-opacity-40">
+              <Link
+                to={"/dashboard/applicationreceived"}
+                className="btn bg-primary-color bg-opacity-40"
+              >
                 <GiProcessor />
               </Link>
             </div>
@@ -160,7 +161,10 @@ function Activity() {
           <div className="bg-white shadow-lg rounded-md p-4 flex-1">
             <div className="flex justify-between items-center">
               <h1 className="text-lg font-semibold">Active Offer</h1>
-              <Link to={'/dashboard/offer'} className="btn bg-primary-color bg-opacity-40">
+              <Link
+                to={"/dashboard/offer"}
+                className="btn bg-primary-color bg-opacity-40"
+              >
                 <MdOutlineLocalOffer />
               </Link>
             </div>
@@ -301,25 +305,30 @@ function Activity() {
                   </tr>
                 </thead>
                 <tbody>
-                  {offers.map((offer, index) => <tr key={index}>
-                    <td>{offer?.title}</td>
-                    <td>
-                      {offer?.recievedOffers.length > 0 ?
-                        <progress
-                          className="progress progress-success w-56"
-                          value="50"
-                          max="100"
-                        ></progress> :
-                        <progress
-                        className="progress progress-success w-56"
-                        value="0"
-                        max="100"
-                      ></progress>
-                    }
-                    </td>
-                    {offer?.recievedOffers.length > 0 && <td>Ongoing</td>}
-                    {offer?.recievedOffers.length === 0 && <td>No Application</td>}
-                  </tr>)}
+                  {offers.map((offer, index) => (
+                    <tr key={index}>
+                      <td>{offer?.title}</td>
+                      <td>
+                        {offer?.recievedOffers.length > 0 ? (
+                          <progress
+                            className="progress progress-success w-56"
+                            value="50"
+                            max="100"
+                          ></progress>
+                        ) : (
+                          <progress
+                            className="progress progress-success w-56"
+                            value="0"
+                            max="100"
+                          ></progress>
+                        )}
+                      </td>
+                      {offer?.recievedOffers.length > 0 && <td>Ongoing</td>}
+                      {offer?.recievedOffers.length === 0 && (
+                        <td>No Application</td>
+                      )}
+                    </tr>
+                  ))}
 
                   {/* <tr className="hover bg-slate-50">
                     <td>Supply chain and purchasing</td>
@@ -366,7 +375,9 @@ function Activity() {
                 placeholder="Search for a teacher"
               />
             </div>
-            <h1 className="font-bold my-5">Job Title: Primary Mathematics Teacher</h1>
+            <h1 className="font-bold my-5">
+              Job Title: Primary Mathematics Teacher
+            </h1>
             <div className="overflow-x-auto">
               <table className="table">
                 {/* head */}
@@ -386,7 +397,10 @@ function Activity() {
                           <div className="avatar">
                             <div className="mask mask-squircle h-12 w-12">
                               <img
-                                src={application.profileImage || "https://via.placeholder.com/40"}
+                                src={
+                                  application.profileImage ||
+                                  "https://via.placeholder.com/40"
+                                }
                                 alt="Avatar"
                               />
                             </div>
@@ -466,16 +480,8 @@ function Activity() {
                 📣 Offers and applications From the selected user, depending on
                 the selected establishments
               </p>
-              <div
-                className="overflow-x-auto mx-auto w-full  "
-
-              >
-                <Bar
-                  data={data}
-                  options={options}
-
-
-                />
+              <div className="overflow-x-auto mx-auto w-full  ">
+                <Bar data={data} options={options} />
               </div>
             </div>
             <div className="mt-11">

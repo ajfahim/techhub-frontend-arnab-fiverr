@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import Navbar from "../../../../Shared/Navbar/Navbar";
-import { IoInformationCircleOutline } from "react-icons/io5";
 import { CiCamera } from "react-icons/ci";
 import { FaChalkboard, FaChalkboardTeacher, FaSearch } from "react-icons/fa";
-import { useAuthContext } from "../../../../hooks/useAuthContext";
+import { IoInformationCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../../../hooks/useAuthContext";
+import Navbar from "../../../../Shared/Navbar/Navbar";
 
 function AddEstablish() {
   const { user } = useAuthContext();
-  console.log("🚀 ~ AddEstablish ~ user:", user?.user?._id)
+  console.log("🚀 ~ AddEstablish ~ user:", user?.user?._id);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    schoolName:user?.user?.schoolName,
+    schoolName: user?.user?.schoolName,
     facilityName: user?.user?.facilityName,
     address: user?.user?.address,
     establishmentType: user?.user?.establishmentType,
@@ -27,7 +27,10 @@ function AddEstablish() {
 
   const handleAdd = () => {
     if (keywords.trim() !== "") {
-      setFormData({ ...formData, teachingArea: [...formData.teachingArea, keywords.trim()] });
+      setFormData({
+        ...formData,
+        teachingArea: [...formData.teachingArea, keywords.trim()],
+      });
       setKeywords("");
     }
   };
@@ -48,31 +51,32 @@ function AddEstablish() {
   };
 
   const [school, setSchool] = useState(null);
-  const [firstTime,setFirstTime]=useState(true);
+  const [firstTime, setFirstTime] = useState(true);
   const fetchSchool = async () => {
-    if(!firstTime)
-      return;
-    const response = await fetch(`http://localhost:4000/api/user/getUser/${user?.user?._id}`);
+    if (!firstTime) return;
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/getUser/${
+        user?.user?._id
+      }`
+    );
 
     const data = await response.json();
 
     setSchool(data);
-    setFormData(
-      {
-        schoolName:data.schoolName,
-        facilityName: data.facilityName,
-        address: data.address,
-        establishmentType: data.establishmentType,
-        contactPerson: data.contactPerson,
-        teachingArea: data.teachingArea,
-        presentation: data.presentation,
-        solicitedApp: data.solicitedApp,
-        acceptRemindersAfter: data.acceptRemindersAfter,
-        unsolicitedApp: data.unsolicitedApp,
-      }
-    )
+    setFormData({
+      schoolName: data.schoolName,
+      facilityName: data.facilityName,
+      address: data.address,
+      establishmentType: data.establishmentType,
+      contactPerson: data.contactPerson,
+      teachingArea: data.teachingArea,
+      presentation: data.presentation,
+      solicitedApp: data.solicitedApp,
+      acceptRemindersAfter: data.acceptRemindersAfter,
+      unsolicitedApp: data.unsolicitedApp,
+    });
     setFirstTime(false);
-  }
+  };
   useEffect(() => {
     if (user?.user?._id) {
       fetchSchool();
@@ -83,17 +87,22 @@ function AddEstablish() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:4000/api/user/editEstablishment/${user?.user?._id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/editEstablishment/${
+          user?.user?._id
+        }`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       console.log(response);
 
       if (response.ok) {
-        navigate('/dashboard/viewestablishment')
+        navigate("/dashboard/viewestablishment");
       } else {
         alert("Failed to update establishment.");
       }
@@ -161,7 +170,9 @@ function AddEstablish() {
               </label>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-bold">Type of Establishment</span>
+                  <span className="label-text font-bold">
+                    Type of Establishment
+                  </span>
                 </label>
                 <select
                   name="establishmentType"
@@ -281,7 +292,9 @@ function AddEstablish() {
               </div>
             </div>
             <div className="mt-20 w-full gap-5 mx-auto bg-white p-5 rounded-3xl shadow-2xl">
-              <h1 className="font-bold mb-4">Recipients of Unsolicited Applications</h1>
+              <h1 className="font-bold mb-4">
+                Recipients of Unsolicited Applications
+              </h1>
               <div className="flex flex-col gap-2">
                 <input
                   type="text"
@@ -305,7 +318,8 @@ function AddEstablish() {
                 className="checkbox checkbox-success"
               />
               <span>
-                I agree to the Terms and Conditions of Tech Hub and that the above information is correct
+                I agree to the Terms and Conditions of Tech Hub and that the
+                above information is correct
               </span>
             </label>
           </div>

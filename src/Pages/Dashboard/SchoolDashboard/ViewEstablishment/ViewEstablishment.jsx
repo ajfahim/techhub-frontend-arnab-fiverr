@@ -1,21 +1,25 @@
-import { Link } from "react-router-dom";
-import Navbar from "../../../../Shared/Navbar/Navbar";
+import { useEffect, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 import { PiPresentationChartBold } from "react-icons/pi";
+import { Link } from "react-router-dom";
 import { useAuthContext } from "../../../../hooks/useAuthContext";
-import { useEffect, useState } from "react";
+import Navbar from "../../../../Shared/Navbar/Navbar";
 
 function ViewEstablishment() {
   const { user } = useAuthContext();
-  const [school,setSchool] = useState(null);
-  const fetchSchool = async()=>{
-    const response = await fetch(`http://localhost:4000/api/user/getUser/${user?.user?._id}`);
+  const [school, setSchool] = useState(null);
+  const fetchSchool = async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_BACKEND_URL}/api/user/getUser/${
+        user?.user?._id
+      }`
+    );
 
     const data = await response.json();
 
     setSchool(data);
-  }
+  };
   useEffect(() => {
     if (user?.user?._id) {
       fetchSchool();
@@ -32,9 +36,10 @@ function ViewEstablishment() {
         </div>
         <div className="flex justify-between mt-7">
           <button className=" btn bg-primary-color text-white">
-            <span className="mr-3">{school?.facilityName}</span> <span>{school?.establishmentType}</span>
+            <span className="mr-3">{school?.facilityName}</span>{" "}
+            <span>{school?.establishmentType}</span>
           </button>
-          <Link to='/dashboard/addestablish'>
+          <Link to="/dashboard/addestablish">
             <button className="btn bg-primary-color text-white">
               <FaRegEdit />
             </button>
@@ -49,17 +54,13 @@ function ViewEstablishment() {
 
             <div className="my-4">
               <ul className="flex flex-col space-y-2">
-                {
-                  school?.teachingArea?.map((ta) => (
-                    <li key={ta} className="w-full">
-                      <div className="btn bg-primary-color text-white w-full">
-                        {ta}
-                      </div>
-                    </li>
-
-                  ))
-                }
-
+                {school?.teachingArea?.map((ta) => (
+                  <li key={ta} className="w-full">
+                    <div className="btn bg-primary-color text-white w-full">
+                      {ta}
+                    </div>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -69,14 +70,11 @@ function ViewEstablishment() {
               Presentation
             </h1>
 
-            <p>
-              {school?.presentation}
-            </p>
-
+            <p>{school?.presentation}</p>
           </div>
         </div>
       </div>
     </div>
   );
 }
-export default ViewEstablishment
+export default ViewEstablishment;

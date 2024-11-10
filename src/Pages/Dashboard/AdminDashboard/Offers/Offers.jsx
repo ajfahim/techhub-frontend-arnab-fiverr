@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 import ButtonGroup from "../../../../Components/ButtonGroup/ButtonGroup";
 import Navbar from "../../../../Shared/Navbar/Navbar";
-import Swal from "sweetalert2";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const Offers = () => {
   const [jobDetails, setJobDetails] = useState([]);
@@ -13,7 +13,9 @@ const Offers = () => {
 
   const fetchOffers = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/offer/getOffers");
+      const response = await fetch(
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/offer/getOffers`
+      );
       const data = await response.json();
       setJobDetails(data);
       setFilteredJobDetails(data); // Set filteredJobDetails initially to all data
@@ -55,9 +57,12 @@ const Offers = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         // If user confirms, proceed with the deletion
-        fetch(`http://localhost:4000/api/offer/deleteOffer/${id}`, {
-          method: "DELETE",
-        })
+        fetch(
+          `${import.meta.env.VITE_APP_BACKEND_URL}/api/offer/deleteOffer/${id}`,
+          {
+            method: "DELETE",
+          }
+        )
           .then((res) => res.json())
           .then((data) => {
             console.log(data);
@@ -75,7 +80,6 @@ const Offers = () => {
       }
     });
   };
-
 
   return (
     <div>

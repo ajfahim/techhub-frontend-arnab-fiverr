@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ButtonGroup from "../../../../Components/ButtonGroup/ButtonGroup";
 import { IoLocationOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../../../hooks/useAuthContext";
@@ -13,33 +12,40 @@ const buttonLabels = [
 ];
 
 function MyApplications() {
-  const {user} = useAuthContext();
+  const { user } = useAuthContext();
   const [jobInfos, setJobinfos] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
   const [schools, setSchools] = useState([]);
   const navigate = useNavigate();
 
   const fetchJobs = async () => {
-    const response = await fetch(`http://localhost:4000/api/application/myApplications/${user?.user?._id}`);
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_BACKEND_URL}/api/application/myApplications/${
+        user?.user?._id
+      }`
+    );
     const data = await response.json();
     setJobinfos(data);
     setFilteredJobs(data);
-    console.log('jobs', data);
+    console.log("jobs", data);
   };
 
-
   useEffect(() => {
-    if(user?.user?._id){
+    if (user?.user?._id) {
       fetchJobs();
     }
   }, [user]);
 
   const handleApply = (jobId, school) => {
-    navigate(`/teacherDashboard/applyJob/${jobId}`, { state: { jobId, school } });
+    navigate(`/teacherDashboard/applyJob/${jobId}`, {
+      state: { jobId, school },
+    });
   };
 
   const handlejobview = (jobId, school) => {
-    navigate(`/teacherDashboard/singlejobview/${jobId}`, { state: { jobId, school } });
+    navigate(`/teacherDashboard/singlejobview/${jobId}`, {
+      state: { jobId, school },
+    });
   };
 
   const getSchool = (ID) => {
@@ -48,8 +54,6 @@ function MyApplications() {
     });
     return dat[0];
   };
-
-
 
   return (
     <div>
@@ -70,7 +74,9 @@ function MyApplications() {
                 className="bg-white border shadow-lg rounded-2xl p-4 flex flex-col justify-between gap-2"
               >
                 <div>
-                  <h2 className="text-xl font-semibold">{jobInfo?.offerData?.title}</h2>
+                  <h2 className="text-xl font-semibold">
+                    {jobInfo?.offerData?.title}
+                  </h2>
                   <p className="text-gray-600 flex items-center gap-1">
                     {jobInfo?.schoolData?.schoolName}
                     <IoLocationOutline className="text-red-500" />
@@ -84,7 +90,9 @@ function MyApplications() {
                       Salary: {jobInfo?.offerData?.salary}
                     </p>
                   </div>
-                  <p className="text-gray-800 my-2">{jobInfo?.offerData?.eduObjective}</p>
+                  <p className="text-gray-800 my-2">
+                    {jobInfo?.offerData?.eduObjective}
+                  </p>
                   <div className="flex flex-wrap my-2">
                     {jobInfo?.offerData?.faceToFace && (
                       <span
@@ -113,9 +121,7 @@ function MyApplications() {
                       </span>
                     ))}
                   </div>
-
                 </div>
-
               </div>
             ))}
           </div>
